@@ -123,7 +123,7 @@ public class VideoMenu extends MenuController
         mOtherKeys2 = new String[] {
                 CameraSettings.KEY_VIDEOCAMERA_FLASH_MODE,
                 CameraSettings.KEY_VIDEO_QUALITY,
-                CameraSettings.KEY_VIDEO_SNAPSHOT_SIZE,
+                //CameraSettings.KEY_VIDEO_SNAPSHOT_SIZE,
                 CameraSettings.KEY_VIDEOCAMERA_FOCUS_MODE,
                 CameraSettings.KEY_VIDEOCAMERA_FOCUS_TIME,
                 CameraSettings.KEY_RECORD_LOCATION,
@@ -134,7 +134,7 @@ public class VideoMenu extends MenuController
                 CameraSettings.KEY_POWER_SHUTTER,
                 CameraSettings.KEY_MAX_BRIGHTNESS,
                 CameraSettings.KEY_SEE_MORE,
-                CameraSettings.KEY_DIS,
+                //CameraSettings.KEY_DIS,
                 CameraSettings.KEY_VIDEO_EFFECT,
                 CameraSettings.KEY_VIDEO_TIME_LAPSE_FRAME_INTERVAL,
                 CameraSettings.KEY_VIDEO_ENCODER,

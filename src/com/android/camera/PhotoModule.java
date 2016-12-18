@@ -142,7 +142,6 @@ public class PhotoModule
     private static final int SWITCH_TO_GCAM_MODULE = 12;
     private static final int ON_PREVIEW_STARTED = 13;
     private static final int UPDATE_GESTURES_UI = 14;
-    private static final int SET_FOCUS_RATIO = 15;
 
     // The subset of parameters we need to update in setCameraParameters().
     private static final int UPDATE_PARAM_INITIALIZE = 1;
@@ -533,10 +532,6 @@ public class PhotoModule
                     break;
                 }
 
-                case SET_FOCUS_RATIO: {
-                    mUI.getFocusRing().setRadiusRatio((Float)msg.obj);
-                    break;
-                }
             }
         }
     }
@@ -989,13 +984,6 @@ public class PhotoModule
         }
     }
 
-    @Override
-    public void setFocusRatio(float ratio) {
-        mHandler.removeMessages(SET_FOCUS_RATIO);
-        Message m = mHandler.obtainMessage(SET_FOCUS_RATIO);
-        m.obj = ratio;
-        mHandler.sendMessage(m);
-    }
 
     // TODO: need to check cached background apps memory and longshot ION memory
     private boolean isLongshotNeedCancel() {
@@ -1535,8 +1523,6 @@ public class PhotoModule
         @Override
         public void onAutoFocusMoving(
                 boolean moving, CameraProxy camera) {
-            mCameraDevice.refreshParameters();
-            mFocusManager.setParameters(mCameraDevice.getParameters());
             mFocusManager.onAutoFocusMoving(moving);
         }
     }
@@ -2603,7 +2589,8 @@ public class PhotoModule
                 if (mFocusManager == null) {
                     mFocusManager = new FocusOverlayManager(mPreferences, defaultFocusModes,
                             mInitialParams, this, mMirror,
-                            mActivity.getMainLooper(), mUI != null ? mUI.getFocusRing() : null);
+                            mActivity.getMainLooper(), mUI != null ? mUI.getFocusRing() : null,
+                            mActivity);
                 }
             }
         }

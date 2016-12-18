@@ -98,7 +98,6 @@ public class VideoModule implements CameraModule,
     private static final int SHOW_TAP_TO_SNAPSHOT_TOAST = 7;
     private static final int SWITCH_CAMERA = 8;
     private static final int SWITCH_CAMERA_START_ANIMATION = 9;
-    private static final int SET_FOCUS_RATIO = 10;
 
     private static final int SCREEN_DELAY = 2 * 60 * 1000;
 
@@ -391,11 +390,6 @@ public class VideoModule implements CameraModule,
 
                     // Enable all camera controls.
                     mSwitchingCamera = false;
-                    break;
-                }
-
-                case SET_FOCUS_RATIO: {
-                    mUI.getFocusRing().setRadiusRatio((Float)msg.obj);
                     break;
                 }
 
@@ -854,9 +848,7 @@ public class VideoModule implements CameraModule,
 
         // Set wavelet denoise mode
         if (mParameters.getSupportedDenoiseModes() != null) {
-            String denoise = mPreferences.getString(CameraSettings.KEY_DENOISE,
-                    mActivity.getString(R.string.pref_camera_denoise_default));
-            mParameters.setDenoise(denoise);
+            mParameters.setDenoise("denoise-on");
         }
     }
 
@@ -869,18 +861,8 @@ public class VideoModule implements CameraModule,
             if (mPaused) return;
 
             //setCameraState(IDLE);
-            mCameraDevice.refreshParameters();
-            mFocusManager.setParameters(mCameraDevice.getParameters());
             mFocusManager.onAutoFocus(focused, false);
         }
-    }
-
-    @Override
-    public void setFocusRatio(float ratio) {
-        mHandler.removeMessages(SET_FOCUS_RATIO);
-        Message m = mHandler.obtainMessage(SET_FOCUS_RATIO);
-        m.obj = ratio;
-        mHandler.sendMessage(m);
     }
 
     private void readVideoPreferences() {
@@ -1383,7 +1365,8 @@ public class VideoModule implements CameraModule,
                     R.array.pref_video_focusmode_default_array);
             mFocusManager = new FocusOverlayManager(mPreferences, defaultFocusModes,
                     mParameters, this, mirror,
-                    mActivity.getMainLooper(), mUI.getFocusRing());
+                    mActivity.getMainLooper(), mUI.getFocusRing(),
+                    mActivity);
         }
     }
 
@@ -2712,7 +2695,6 @@ public class VideoModule implements CameraModule,
         // Keep preview size up to date.
         mParameters = mCameraDevice.getParameters();
 
-        mFocusManager.setPreviewSize(videoWidth, videoHeight);
     }
 
     @Override
